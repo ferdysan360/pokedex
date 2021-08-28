@@ -3,11 +3,13 @@ import './App.css';
 import { jsx, css } from '@emotion/react'
 import { useState } from 'react';
 import PokemonList from './Containers/PokemonList';
+import PokemonDetails from './Containers/PokemonDetails';
 import PokedexLogo from './Assets/pokedex_logo.png';
 
 function App() {
 
   const [page, setPage] = useState("pokemonList");
+  const [pokemonName, setPokemonName] = useState(null);
 
   const navMenuStyle = css`
     margin: 10px 0px;
@@ -15,7 +17,7 @@ function App() {
 
   const section = css`
     margin: 20px 40px;
-    max-width: 1440px;
+    max-width: 1280px;
   `
 
   const flex = css`
@@ -30,6 +32,12 @@ function App() {
     max-height: 50px;
   `
 
+  const callback = (page, pokemonName) => {
+    const newPage = page;
+    const newPokemonName = pokemonName;
+    setPokemonName(newPokemonName);
+    setPage(newPage);
+  }
 
   return (
     <div className="App">
@@ -46,11 +54,11 @@ function App() {
         <div css={section}>
           {
             page === "pokemonList" ? 
-            <PokemonList />
+              <PokemonList pokemonListCallback={callback}/>
             : page === "myPokemon" ?
-            <h1>My Pokemon</h1>
+              <h1>My Pokemon</h1>
             : page === "pokemonDetails" ?
-            <h1>Pokemon Details</h1>
+              <PokemonDetails pokemonName={pokemonName}/>
             : <h1>Page Not Found</h1>
           }
         </div>

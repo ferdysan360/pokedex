@@ -3,7 +3,7 @@ import { jsx, css } from '@emotion/react'
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-function PokemonList() {
+const PokemonList = ({pokemonListCallback}) => {
 
     const [count, setCount] = useState(0);
     const [prev, setPrev] = useState(null);
@@ -24,25 +24,28 @@ function PokemonList() {
         })
     }, [url]);
 
+    const callback = (pokemonName) => {
+        pokemonListCallback("pokemonDetails", pokemonName);
+    }
+
     const pokemonButtonStyle = css`
         margin: 10px;
         padding: 10px;
-        border: 1px solid black;
+        // border: 1px solid black;
         border-radius: 8px;
         background-color: white;
+        font-size: 20px;
     `
 
     const PokemonButton = ({ pokemon }) => (
-        <a 
-            href={pokemon.url} 
-            target="_blank" 
-            rel="noopener noreferrer"
+        <button 
+            css={pokemonButtonStyle}
+            onClick={() => {callback(pokemon.name)}}    
         >
-            <button css={pokemonButtonStyle}>
-                {pokemon.name}
-            </button>
-        </a>
+            {pokemon.name}
+        </button>
     )
+
 
     return (
         <div>
