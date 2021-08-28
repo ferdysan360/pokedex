@@ -1,23 +1,30 @@
-import logo from './logo.svg';
+/** @jsxImportSource @emotion/react */
 import './App.css';
+import { jsx, css } from '@emotion/react'
+import { useState } from 'react';
+import PokemonList from './Containers/PokemonList';
 
 function App() {
+
+  const [page, setPage] = useState("pokemonList");
+
+  const navMenuStyle = css`
+    margin: 10px 0px;
+  `
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <button css={navMenuStyle} onClick={() => { setPage("pokemonList") }}>Pokemon List</button>
+        <button css={navMenuStyle} onClick={() => { setPage("myPokemon") }}>My Pokemon</button>
       </header>
+      {
+        page === "pokemonList" ? 
+          <PokemonList />
+        : page === "myPokemon" ?
+          <div>My Pokemon</div>
+        : <div>Pokemon Details</div>
+      }
     </div>
   );
 }
