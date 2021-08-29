@@ -59,10 +59,67 @@ const PokemonDetails = ({ pokemonName }) => {
         flex-wrap: wrap;
     `
 
+    const findNickname = (nickname, initialValue) => {
+        var isFound = false;
+
+        for (let i = 0; i < initialValue.length; i++) {
+            if (initialValue[i].nickname === nickname) {
+                isFound = true;
+                break;
+            }
+            else {
+                continue;
+            }
+        }
+
+        return isFound;
+    }
+
+    const catchPokemon = (nickname, pokemon) => {
+        var initialValue = JSON.parse(window.localStorage.getItem("my_pokemon"));
+        
+        if (!initialValue) {
+            initialValue = [];
+        }
+
+        var isCancelled = false;
+        while(findNickname(nickname, initialValue)) {
+            nickname = prompt("Nickname already exist. please choose a different nickname:", nickname);
+            if (nickname === null || nickname === "") {
+                alert("Prompt Canceled.");
+                return;
+            }
+        }
+
+        var newPokemon = {
+            nickname: nickname,
+            name: pokemon?.name
+        };
+
+        initialValue.push(newPokemon);
+
+        window.localStorage.setItem("my_pokemon", JSON.stringify(initialValue));
+
+        alert("Pokemon succesfully saved!");
+    }
+
     const CatchButton = ({ pokemon }) => (
         <button
             css={catchButtonStyle}
-            onClick={() => { }}
+            onClick={() => {
+                if (Math.round(Math.random()) === 1) {
+                    let nickname = prompt("Pokemon Caught! Please enter your pokemon's nickname:", pokemon?.name);
+                    if (nickname === null || nickname === "") {
+                        alert("Prompt Canceled.");
+                    }
+                    else {
+                        catchPokemon(nickname, pokemon);
+                    }
+                }
+                else {
+                    alert("Failed! Try Again!");
+                }
+            }}
         >
             Catch!
         </button>
@@ -79,7 +136,7 @@ const PokemonDetails = ({ pokemonName }) => {
                 <div>
                     <h2>{pokemonInfo?.name}</h2>
                     <br/>
-                    <CatchButton />
+                    <CatchButton pokemon={pokemonInfo}/>
                 </div>
             </div>
             <div>

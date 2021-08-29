@@ -41,12 +41,19 @@ const PokemonList = ({pokemonListCallback}) => {
         }
     `
 
+    const countStyle = css`
+        font-size: 14px;
+    `
+
     const PokemonButton = ({ pokemon }) => (
         <button 
             css={pokemonButtonStyle}
             onClick={() => {callback(pokemon.name)}}    
         >
             {pokemon.name}
+            <div css={countStyle}>
+                {"caught: null"}
+            </div>
         </button>
     )
 
