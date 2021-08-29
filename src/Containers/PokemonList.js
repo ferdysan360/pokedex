@@ -35,6 +35,10 @@ const PokemonList = ({pokemonListCallback}) => {
         border-radius: 8px;
         background-color: white;
         font-size: 20px;
+        cursor: pointer;
+        :hover {
+            background-color: #FECD31;
+        }
     `
 
     const PokemonButton = ({ pokemon }) => (
