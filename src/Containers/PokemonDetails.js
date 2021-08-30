@@ -1,23 +1,22 @@
 /** @jsxImportSource @emotion/react */
-import { jsx, css } from '@emotion/react'
+import { css } from '@emotion/react'
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const PokemonDetails = ({ pokemonName }) => {
 
-    const [url, setUrl] = useState(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`);
+    const [url] = useState(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`);
     const [pokemonInfo, setPokemonInfo] = useState(null);
 
     useEffect(() => {
         axios.get(url)
             .then(result => {
-                console.log(result.data);
                 setPokemonInfo(result.data);
             })
             .catch(error => {
                 console.log(error);
             })
-    }, []);
+    }, [url]);
 
     const baseStyle = css`
         display: inline-block;
@@ -39,7 +38,6 @@ const PokemonDetails = ({ pokemonName }) => {
     const catchButtonStyle = css`
         margin: 10px;
         padding: 10px;
-        // border-color: #17147E;
         border-radius: 8px;
         background-color: #FECD31;
         font-size: 20px;
@@ -82,7 +80,6 @@ const PokemonDetails = ({ pokemonName }) => {
             initialValue = [];
         }
 
-        var isCancelled = false;
         while(findNickname(nickname, initialValue)) {
             nickname = prompt("Nickname already exist. please choose a different nickname:", nickname);
             if (nickname === null || nickname === "") {

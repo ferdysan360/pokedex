@@ -1,20 +1,19 @@
 /** @jsxImportSource @emotion/react */
-import { jsx, css } from '@emotion/react'
+import { css } from '@emotion/react'
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const PokemonList = ({pokemonListCallback}) => {
 
-    const [count, setCount] = useState(0);
     const [prev, setPrev] = useState(null);
     const [next, setNext] = useState(null);
     const [url, setUrl] = useState('https://pokeapi.co/api/v2/pokemon');
     const [pokemonList, setPokemonList] = useState(null);
+    const [myPokemonList, setMyPokemonList] = useState(null);
     
     useEffect(() => {
         axios.get(url)
         .then(result => {
-            setCount(result.data.count);
             setPrev(result.data.previous);
             setNext(result.data.next);
             setPokemonList(result.data.results);
@@ -22,6 +21,8 @@ const PokemonList = ({pokemonListCallback}) => {
         .catch(error => {
             console.log(error);
         })
+
+        setMyPokemonList(JSON.parse(window.localStorage.getItem("my_pokemon")));
     }, [url]);
 
     const callback = (pokemonName) => {
@@ -31,7 +32,6 @@ const PokemonList = ({pokemonListCallback}) => {
     const pokemonButtonStyle = css`
         margin: 10px;
         padding: 10px;
-        // border: 1px solid black;
         border-radius: 8px;
         background-color: white;
         font-size: 20px;
@@ -45,6 +45,22 @@ const PokemonList = ({pokemonListCallback}) => {
         font-size: 14px;
     `
 
+    const countPokemon = ( pokemonName ) => {
+        if (myPokemonList && myPokemonList?.length !== 0) {
+            var count = 0;
+            for (let i = 0; i < myPokemonList?.length; i++) {
+                if (myPokemonList[i].name === pokemonName) {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+        else {
+            return 0;
+        }
+    }
+
     const PokemonButton = ({ pokemon }) => (
         <button 
             css={pokemonButtonStyle}
@@ -52,11 +68,10 @@ const PokemonList = ({pokemonListCallback}) => {
         >
             {pokemon.name}
             <div css={countStyle}>
-                {"caught: null"}
+                {`caught: ${countPokemon(pokemon.name)}`}
             </div>
         </button>
     )
-
 
     return (
         <div>

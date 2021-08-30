@@ -1,10 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import './App.css';
-import { jsx, css } from '@emotion/react'
+import { css } from '@emotion/react'
 import { useState } from 'react';
 import PokemonList from './Containers/PokemonList';
 import PokemonDetails from './Containers/PokemonDetails';
 import PokedexLogo from './Assets/pokedex_logo.png';
+import MyPokemon from './Containers/MyPokemon';
 
 function App() {
 
@@ -56,7 +57,7 @@ function App() {
             page === "pokemonList" ? 
               <PokemonList pokemonListCallback={callback}/>
             : page === "myPokemon" ?
-              <h1>My Pokemon</h1>
+                <MyPokemon myPokemonCallback={callback}/>
             : page === "pokemonDetails" ?
               <PokemonDetails pokemonName={pokemonName}/>
             : <h1>Page Not Found</h1>
