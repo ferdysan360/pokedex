@@ -14,8 +14,12 @@ const MyPokemon = ({ myPokemonCallback }) => {
         myPokemonCallback("pokemonDetails", pokemonName);
     }
 
-    const pokemonButtonStyle = css`
+    const inlineDiv = css`
+        display: inline-block;
         margin: 10px;
+    `
+
+    const pokemonButtonStyle = css`
         padding: 10px;
         border-radius: 8px;
         background-color: white;
@@ -24,8 +28,23 @@ const MyPokemon = ({ myPokemonCallback }) => {
         font-weight: 700;
         cursor: pointer;
         :hover {
-            background-color: #FECD31;
+            background-color: #E6E6E6;
         }
+        z-index: 1;
+    `
+
+    const releaseButtonStyle = css`
+        padding: 5px;
+        border-radius: 8px;
+        background-color: #DC0A2D;
+        font-size: 16px;
+        color: black;
+        font-weight: 700;
+        cursor: pointer;
+        :hover {
+            background-color: #FF0000;
+        }
+        z-index: 0;
     `
 
     const pokemonNameStyle = css`
@@ -34,7 +53,26 @@ const MyPokemon = ({ myPokemonCallback }) => {
         font-weight: 500;
     `
 
-    const PokemonButton = ({ pokemon }) => (
+    const releasePokemon = ( pokemon, index ) => {
+        if (window.confirm("Are you sure you want to release this pokemon?")) {
+            var newPokemonList = pokemonList.slice();
+            newPokemonList.splice(index, 1);
+
+            window.localStorage.setItem("my_pokemon", JSON.stringify(newPokemonList));
+            setPokemonList(newPokemonList);
+        }
+    }
+
+    const ReleaseButton = ({ pokemon, index }) => (
+        <button 
+            css={releaseButtonStyle}
+            onClick={() => { releasePokemon(pokemon, index) }}
+        >
+            Release
+        </button>
+    )
+
+    const PokemonButton = ({ pokemon, index }) => (
         <button
             css={pokemonButtonStyle}
             onClick={() => { callback(pokemon.name) }}
@@ -57,8 +95,15 @@ const MyPokemon = ({ myPokemonCallback }) => {
                     <div>No Pokemon have been caught. Go catch some!</div>
                 :
                 <div>
-                    {pokemonList?.map((pokemon) => (
-                        <PokemonButton pokemon={pokemon} />
+                    {pokemonList?.map((pokemon, index) => (
+                        <div css={inlineDiv}>
+                            <div>
+                                <PokemonButton pokemon={pokemon} index={index} />
+                            </div>
+                            <div>
+                                <ReleaseButton pokemon={pokemon} index={index} />
+                            </div>
+                        </div>
                     ))}
                 </div>
             }

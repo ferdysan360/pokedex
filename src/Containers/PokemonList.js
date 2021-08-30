@@ -37,7 +37,7 @@ const PokemonList = ({pokemonListCallback}) => {
         font-size: 20px;
         cursor: pointer;
         :hover {
-            background-color: #FECD31;
+            background-color: #E6E6E6;
         }
     `
 
