@@ -1,12 +1,17 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Fragment } from 'react';
 import axios from 'axios';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
 const PokemonDetails = ({ pokemonName }) => {
 
     const [url] = useState(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`);
     const [pokemonInfo, setPokemonInfo] = useState(null);
+    const [openCaptured, setOpenCaptured] = useState(false);
+    const [capturedMessage, setCapturedMessage] = useState(null);
+    const [severity, setSeverity] = useState(null);
 
     useEffect(() => {
         axios.get(url)
@@ -57,6 +62,10 @@ const PokemonDetails = ({ pokemonName }) => {
         flex-wrap: wrap;
     `
 
+    const Alert = (props) => {
+        return <MuiAlert elevation={6} variant="filled" {...props} />;
+    }
+
     const findNickname = (nickname, initialValue) => {
         var isFound = false;
 
@@ -83,7 +92,10 @@ const PokemonDetails = ({ pokemonName }) => {
         while(findNickname(nickname, initialValue)) {
             nickname = prompt("Nickname already exist. please choose a different nickname:", nickname);
             if (nickname === null || nickname === "") {
-                alert("Prompt Canceled.");
+                setOpenCaptured(false);
+                setCapturedMessage("Pokemon slipped away... Try Again!");
+                setSeverity("error");
+                setOpenCaptured(true);
                 return;
             }
         }
@@ -97,7 +109,9 @@ const PokemonDetails = ({ pokemonName }) => {
 
         window.localStorage.setItem("my_pokemon", JSON.stringify(initialValue));
 
-        alert("Pokemon succesfully saved!");
+        setCapturedMessage("Pokemon successfully saved!");
+        setSeverity("success");
+        setOpenCaptured(true);
     }
 
     const CatchButton = ({ pokemon }) => (
@@ -107,14 +121,20 @@ const PokemonDetails = ({ pokemonName }) => {
                 if (Math.round(Math.random()) === 1) {
                     let nickname = prompt("Pokemon Caught! Please enter your pokemon's nickname:", pokemon?.name);
                     if (nickname === null || nickname === "") {
-                        alert("Prompt Canceled.");
+                        setOpenCaptured(false);
+                        setCapturedMessage("Pokemon slipped away... Try Again!");
+                        setSeverity("error");
+                        setOpenCaptured(true);
                     }
                     else {
                         catchPokemon(nickname, pokemon);
                     }
                 }
                 else {
-                    alert("Failed! Try Again!");
+                    setOpenCaptured(false);
+                    setCapturedMessage("Pokemon slipped away... Try Again!");
+                    setSeverity("error");
+                    setOpenCaptured(true);
                 }
             }}
         >
@@ -122,6 +142,7 @@ const PokemonDetails = ({ pokemonName }) => {
         </button>
     )
 
+    
 
     return (
         <div>
@@ -145,6 +166,15 @@ const PokemonDetails = ({ pokemonName }) => {
                     <div css={[baseStyle, moveStyle]}>{move?.move?.name}</div>
                 ))}
             </div>
+            <Snackbar 
+                open={openCaptured} 
+                onClose={() => setOpenCaptured(false)} 
+                autoHideDuration={4000}
+            >
+                <Alert onClose={() => setOpenCaptured(false)} severity={severity}>
+                    {capturedMessage}
+                </Alert>
+            </Snackbar>
         </div>
 
     );

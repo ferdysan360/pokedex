@@ -1,10 +1,15 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { useEffect, useState } from 'react';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
 const MyPokemon = ({ myPokemonCallback }) => {
 
     const [pokemonList, setPokemonList] = useState(null);
+    const [openReleased, setOpenReleased] = useState(false);
+    const [releasedMessage, setReleasedMessage] = useState(null);
+    const [severity, setSeverity] = useState(null);
 
     useEffect(() => {
         setPokemonList(JSON.parse(window.localStorage.getItem("my_pokemon")));
@@ -53,6 +58,10 @@ const MyPokemon = ({ myPokemonCallback }) => {
         font-weight: 500;
     `
 
+    const Alert = (props) => {
+        return <MuiAlert elevation={6} variant="filled" {...props} />;
+    }
+
     const releasePokemon = ( pokemon, index ) => {
         if (window.confirm("Are you sure you want to release this pokemon?")) {
             var newPokemonList = pokemonList.slice();
@@ -60,6 +69,10 @@ const MyPokemon = ({ myPokemonCallback }) => {
 
             window.localStorage.setItem("my_pokemon", JSON.stringify(newPokemonList));
             setPokemonList(newPokemonList);
+
+            setReleasedMessage("Pokemon successfully released!");
+            setSeverity("success");
+            setOpenReleased(true);
         }
     }
 
@@ -107,6 +120,15 @@ const MyPokemon = ({ myPokemonCallback }) => {
                     ))}
                 </div>
             }
+            <Snackbar
+                open={openReleased}
+                onClose={() => setOpenReleased(false)}
+                autoHideDuration={4000}
+            >
+                <Alert onClose={() => setOpenReleased(false)} severity={severity}>
+                    {releasedMessage}
+                </Alert>
+            </Snackbar>
         </div>
     );
 }
