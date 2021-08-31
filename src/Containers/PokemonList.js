@@ -2,6 +2,7 @@
 import { css } from '@emotion/react'
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import PokemonCard from '../Components/PokemonCard';
 
 const PokemonList = ({pokemonListCallback}) => {
 
@@ -10,6 +11,15 @@ const PokemonList = ({pokemonListCallback}) => {
     const [url, setUrl] = useState('https://pokeapi.co/api/v2/pokemon');
     const [pokemonList, setPokemonList] = useState(null);
     const [myPokemonList, setMyPokemonList] = useState(null);
+
+    const flexPokemonList = css`
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-evenly;
+        flex-wrap: wrap;
+        margin: 0px 0px 20px 0px;
+    `
     
     useEffect(() => {
         axios.get(url)
@@ -29,21 +39,9 @@ const PokemonList = ({pokemonListCallback}) => {
         pokemonListCallback("pokemonDetails", pokemonName);
     }
 
-    const pokemonButtonStyle = css`
-        margin: 10px;
-        padding: 10px;
-        border-radius: 8px;
-        background-color: white;
-        font-size: 20px;
-        cursor: pointer;
-        :hover {
-            background-color: #E6E6E6;
-        }
-    `
-
-    const countStyle = css`
-        font-size: 14px;
-    `
+    const detailsPokemon = ( pokemonName ) => {
+        callback(pokemonName);
+    }
 
     const countPokemon = ( pokemonName ) => {
         if (myPokemonList && myPokemonList?.length !== 0) {
@@ -61,24 +59,14 @@ const PokemonList = ({pokemonListCallback}) => {
         }
     }
 
-    const PokemonButton = ({ pokemon }) => (
-        <button 
-            css={pokemonButtonStyle}
-            onClick={() => {callback(pokemon.name)}}    
-        >
-            {pokemon.name}
-            <div css={countStyle}>
-                {`caught: ${countPokemon(pokemon.name)}`}
-            </div>
-        </button>
-    )
-
     return (
         <div>
             <h1>Pokemon List</h1>
-            {pokemonList?.map((pokemon) => (
-                <PokemonButton pokemon={pokemon}/>
-            ))}
+            <div css={flexPokemonList}>
+                {pokemonList?.map((pokemon) => (
+                    <PokemonCard pokemon={pokemon} countFunction={countPokemon} detailsFunction={detailsPokemon} />
+                ))}
+            </div>
             <div>
                 <button disabled={prev === null} onClick={() => { setUrl(prev) }}>Prev</button>
                 <button disabled={next === null} onClick={() => { setUrl(next) }}>Next</button>

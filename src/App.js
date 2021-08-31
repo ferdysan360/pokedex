@@ -17,7 +17,7 @@ function App() {
   `
 
   const section = css`
-    margin: 20px 40px;
+    margin: 20px 20px;
     max-width: 1280px;
   `
 

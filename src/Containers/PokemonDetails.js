@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import { useEffect, useState, Fragment } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
@@ -153,7 +153,6 @@ const PokemonDetails = ({ pokemonName }) => {
                 </div>
                 <div>
                     <h2>{pokemonInfo?.name}</h2>
-                    <br/>
                     <CatchButton pokemon={pokemonInfo}/>
                 </div>
             </div>

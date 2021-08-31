@@ -3,6 +3,7 @@ import { css } from '@emotion/react'
 import { useEffect, useState } from 'react';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import PokemonCard from '../Components/PokemonCard';
 
 const MyPokemon = ({ myPokemonCallback }) => {
 
@@ -18,6 +19,15 @@ const MyPokemon = ({ myPokemonCallback }) => {
     const callback = (pokemonName) => {
         myPokemonCallback("pokemonDetails", pokemonName);
     }
+
+    const flexPokemonList = css`
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-evenly;
+        flex-wrap: wrap;
+        margin: 0px 0px 20px 0px;
+    `
 
     const inlineDiv = css`
         display: inline-block;
@@ -62,6 +72,10 @@ const MyPokemon = ({ myPokemonCallback }) => {
         return <MuiAlert elevation={6} variant="filled" {...props} />;
     }
 
+    const detailsPokemon = (pokemonName) => {
+        callback(pokemonName);
+    }
+
     const releasePokemon = ( pokemon, index ) => {
         if (window.confirm("Are you sure you want to release this pokemon?")) {
             var newPokemonList = pokemonList.slice();
@@ -85,7 +99,7 @@ const MyPokemon = ({ myPokemonCallback }) => {
         </button>
     )
 
-    const PokemonButton = ({ pokemon, index }) => (
+    const PokemonButton = ({ pokemon }) => (
         <button
             css={pokemonButtonStyle}
             onClick={() => { callback(pokemon.name) }}
@@ -107,15 +121,16 @@ const MyPokemon = ({ myPokemonCallback }) => {
                 (pokemonList === null || pokemonList?.length === 0) ?
                     <div>No Pokemon have been caught. Go catch some!</div>
                 :
-                <div>
+                <div css={flexPokemonList}>
                     {pokemonList?.map((pokemon, index) => (
-                        <div css={inlineDiv}>
-                            <div>
+                        <div>
+                            {/* <div>
                                 <PokemonButton pokemon={pokemon} index={index} />
                             </div>
                             <div>
                                 <ReleaseButton pokemon={pokemon} index={index} />
-                            </div>
+                            </div> */}
+                            <PokemonCard pokemon={pokemon} detailsFunction={detailsPokemon} releaseFunction={releasePokemon} index={index} />
                         </div>
                     ))}
                 </div>
