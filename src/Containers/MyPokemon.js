@@ -72,7 +72,7 @@ const MyPokemon = ({ myPokemonCallback }) => {
                 :
                 <div css={flexPokemonList}>
                     {pokemonList?.map((pokemon, index) => (
-                        <PokemonCard pokemon={pokemon} detailsFunction={detailsPokemon} releaseFunction={releasePokemon} index={index} />
+                        <PokemonCard key={pokemon.nickname} pokemon={pokemon} detailsFunction={detailsPokemon} releaseFunction={releasePokemon} index={index} />
                     ))}
                 </div>
             }

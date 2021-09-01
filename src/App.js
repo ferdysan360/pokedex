@@ -2,6 +2,8 @@
 import './App.css';
 import { css } from '@emotion/react'
 import { useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 import PokemonList from './Containers/PokemonList';
 import PokemonDetails from './Containers/PokemonDetails';
 import PokedexLogo from './Assets/pokedex_logo.png';
@@ -11,10 +13,6 @@ function App() {
 
   const [page, setPage] = useState("pokemonList");
   const [pokemonName, setPokemonName] = useState(null);
-
-  const navMenuStyle = css`
-    margin: 10px 0px;
-  `
 
   const section = css`
     margin: 20px 20px;
@@ -40,14 +38,26 @@ function App() {
     setPage(newPage);
   }
 
+  const useStyles = makeStyles((theme) => ({
+    margin: {
+      margin: theme.spacing(0.5),
+    },
+  }));
+
+  const classes = useStyles();
+
   return (
     <div className="App">
       <header className="App-header">
         <div css={section}>
           <img css={pokedexLogoStyle} src={PokedexLogo} alt="pokedex-logo" />
           <div>
-            <button css={navMenuStyle} onClick={() => { setPage("pokemonList") }}>Pokemon List</button>
-            <button css={navMenuStyle} onClick={() => { setPage("myPokemon") }}>My Pokemon</button>
+            <Button size="small" variant="contained" color="primary" className={classes.margin} onClick={() => { setPage("pokemonList") }}>
+              Pokemon List
+            </Button>
+            <Button size="small" variant="contained" color="primary" className={classes.margin} onClick={() => { setPage("myPokemon") }}>
+              My Pokemon
+            </Button>
           </div>
         </div>
       </header>
@@ -57,7 +67,7 @@ function App() {
             page === "pokemonList" ? 
               <PokemonList pokemonListCallback={callback}/>
             : page === "myPokemon" ?
-                <MyPokemon myPokemonCallback={callback}/>
+              <MyPokemon myPokemonCallback={callback}/>
             : page === "pokemonDetails" ?
               <PokemonDetails pokemonName={pokemonName}/>
             : <h1>Page Not Found</h1>

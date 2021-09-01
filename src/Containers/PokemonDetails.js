@@ -172,11 +172,11 @@ const PokemonDetails = ({ pokemonName }) => {
             </div>
             <div>
                 {pokemonInfo?.types?.map((type) => (
-                    <div css={[baseStyle, typeStyle]}>{type?.type?.name}</div>
+                    <div key={type?.type?.name} css={[baseStyle, typeStyle]}>{type?.type?.name}</div>
                 ))}
                 <br/>
                 {pokemonInfo?.moves?.map((move) => (
-                    <div css={[baseStyle, moveStyle]}>{move?.move?.name}</div>
+                    <div key={move?.move?.name} css={[baseStyle, moveStyle]}>{move?.move?.name}</div>
                 ))}
             </div>
             <Snackbar 
@@ -218,7 +218,6 @@ const PokemonDetails = ({ pokemonName }) => {
                 </form>
             </Dialog>
         </div>
-
     );
 }
 

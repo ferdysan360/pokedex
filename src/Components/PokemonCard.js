@@ -7,9 +7,9 @@ import { indigo, red } from '@material-ui/core/colors';
 
 const PokemonCard = ({ pokemon, countFunction, detailsFunction, releaseFunction, index }) => {
 
-    const { height, width } = useWindowDimensions();
+    const { width } = useWindowDimensions();
 
-    const pokemonButtonStyle = css`
+    const pokemonCardStyle = css`
         display: flex;
         justify-content: center;
         align-items: space-evenly;
@@ -78,7 +78,7 @@ const PokemonCard = ({ pokemon, countFunction, detailsFunction, releaseFunction,
     const classes = useStyles();
 
     return (
-        <div css={[pokemonButtonStyle, cardResponsiveStyle]}>
+        <div css={[pokemonCardStyle, cardResponsiveStyle]}>
             {
                 pokemon.nickname ?
                     (<div css={pokemonNicknameStyle}>

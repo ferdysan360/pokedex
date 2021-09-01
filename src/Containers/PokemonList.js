@@ -2,6 +2,8 @@
 import { css } from '@emotion/react'
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 import PokemonCard from '../Components/PokemonCard';
 
 const PokemonList = ({pokemonListCallback}) => {
@@ -59,17 +61,29 @@ const PokemonList = ({pokemonListCallback}) => {
         }
     }
 
+    const useStyles = makeStyles((theme) => ({
+        margin: {
+            margin: theme.spacing(0.5),
+        },
+    }));
+
+    const classes = useStyles();
+
     return (
         <div>
             <h1>Pokemon List</h1>
             <div css={flexPokemonList}>
                 {pokemonList?.map((pokemon) => (
-                    <PokemonCard pokemon={pokemon} countFunction={countPokemon} detailsFunction={detailsPokemon} />
+                    <PokemonCard key={pokemon.name} pokemon={pokemon} countFunction={countPokemon} detailsFunction={detailsPokemon} />
                 ))}
             </div>
             <div>
-                <button disabled={prev === null} onClick={() => { setUrl(prev) }}>Prev</button>
-                <button disabled={next === null} onClick={() => { setUrl(next) }}>Next</button>
+                <Button size="small" variant="contained" color="default" className={classes.margin} disabled={prev === null} onClick={() => { setUrl(prev) }}>
+                    &lt; Prev
+                </Button>
+                <Button size="small" variant="contained" color="default" className={classes.margin} disabled={next === null} onClick={() => { setUrl(next) }}>
+                    Next &gt;
+                </Button>
             </div>
         </div>
         
