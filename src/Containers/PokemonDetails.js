@@ -11,6 +11,8 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { indigo, amber } from '@material-ui/core/colors';
 
 const PokemonDetails = ({ pokemonName }) => {
 
@@ -43,33 +45,61 @@ const PokemonDetails = ({ pokemonName }) => {
     `
 
     const typeStyle = css`
-        background-color: #FECD31;
+        background-color: #E0E0E0;
     `
 
     const moveStyle = css`
-        background-color: #17147E;
+        background-color: #424242;
         color: white;
-    `
-
-    const catchButtonStyle = css`
-        margin: 10px;
-        padding: 10px;
-        border-radius: 8px;
-        background-color: #FECD31;
-        font-size: 20px;
-        font-weight: 700;
-        color: #17147E;
-        cursor: pointer;
-        :hover {
-            background-color: #E3AD00;
-        }
     `
 
     const flex = css`
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
+        flex-wrap: wrap;
+    `
+
+    const imgStyle = css`
+        width: 200px;
+        height: 200px;
+    `
+
+    const imgContainerStyle = css`
+        padding: 20px 0px;
+        min-width: 250px;
+        border-radius: 8px;
+        box-shadow: 5px 5px 18px #888888;
+    `
+
+    const nameStyle = css`
+        border: unset;
+        padding: 10px 0px 30px 0px;
+    `
+
+    const typesMovesContainersStyle = css`
+        border-radius: 8px;
+        box-shadow: 5px 5px 18px #888888;
+        padding: 20px 20px;
+    `
+
+    const subTitleStyle = css`
+        font-size: 18px;
+        font-weight: 900;
+        display: flex;
+        justify-content: start;
+        margin: 0px 0px 5px 0px;
+    `
+
+    const typesStyle = css`
+        display: flex;
+        flex-wrap: wrap;
+        margin: 0px 0px 30px 0px;
+    `
+
+    const movesStyle = css`
+        display: flex;
         flex-wrap: wrap;
     `
 
@@ -138,46 +168,74 @@ const PokemonDetails = ({ pokemonName }) => {
 
     }
 
-    const CatchButton = ({ pokemon }) => (
-        <button
-            css={catchButtonStyle}
-            onClick={() => {
-                if (Math.round(Math.random()) === 1) {
-                    setNickname(pokemonName);
-                    setOpenDialog(true);
-                }
-                else {
-                    setOpenCaptured(false);
-                    setCapturedMessage("Pokemon slipped away... Try Again!");
-                    setSeverity("error");
-                    setOpenCaptured(true);
-                }
-            }}
-        >
-            Catch!
-        </button>
-    )
+    const YellowButton = withStyles((theme) => ({
+        root: {
+            color: indigo[800],
+            backgroundColor: amber[500],
+            fontWeight: 700,
+            fontSize: '20px',
+            '&:hover': {
+                backgroundColor: amber[700],
+            },
+        },
+    }))(Button);
+
+    const useStyles = makeStyles((theme) => ({
+        margin: {
+            margin: theme.spacing(0.5),
+        },
+    }));
+
+    const classes = useStyles();
 
     return (
         <div>
             <h1>Pokemon Details</h1>
             <div css={flex}>
-                <div>
-                    <img src={pokemonInfo?.sprites?.other["official-artwork"]?.front_default} height="300" width="300" alt="pokemon"/>
+                <div css={imgContainerStyle}>
+                    <img css={imgStyle} src={pokemonInfo?.sprites?.other["official-artwork"]?.front_default} alt="pokemon"/>
                 </div>
-                <div>
+                <div css={nameStyle}>
                     <h2>{pokemonInfo?.name}</h2>
-                    <CatchButton pokemon={pokemonInfo}/>
+                    <YellowButton 
+                        size="large" 
+                        variant="contained" 
+                        color="primary" 
+                        className={classes.margin} 
+                        onClick={() => {
+                            if (Math.round(Math.random()) === 1) {
+                                setNickname(pokemonName);
+                                setOpenDialog(true);
+                            }
+                            else {
+                                setOpenCaptured(false);
+                                setCapturedMessage("Pokemon slipped away... Try Again!");
+                                setSeverity("error");
+                                setOpenCaptured(true);
+                            }
+                        }}
+                    >
+                        Catch!
+                    </YellowButton>
                 </div>
-            </div>
-            <div>
-                {pokemonInfo?.types?.map((type) => (
-                    <div key={type?.type?.name} css={[baseStyle, typeStyle]}>{type?.type?.name}</div>
-                ))}
-                <br/>
-                {pokemonInfo?.moves?.map((move) => (
-                    <div key={move?.move?.name} css={[baseStyle, moveStyle]}>{move?.move?.name}</div>
-                ))}
+                <div css={typesMovesContainersStyle}>
+                    <div css={subTitleStyle}>
+                        Types
+                    </div>
+                    <div css={typesStyle}>
+                        {pokemonInfo?.types?.map((type) => (
+                            <div key={type?.type?.name} css={[baseStyle, typeStyle]}>{type?.type?.name}</div>
+                        ))}
+                    </div>
+                    <div css={subTitleStyle}>
+                        Moves
+                    </div>
+                    <div css={movesStyle}>
+                        {pokemonInfo?.moves?.map((move) => (
+                            <div key={move?.move?.name} css={[baseStyle, moveStyle]}>{move?.move?.name}</div>
+                        ))}
+                    </div>
+                </div>
             </div>
             <Snackbar 
                 open={openCaptured} 
