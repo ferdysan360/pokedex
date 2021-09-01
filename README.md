@@ -6,7 +6,7 @@ Pokédex is a mobile-first & single page application (SPA) site made with React.
 
 1. Git clone this repository using `git clone git@github.com:ferdysan360/pokedex.git` (SSH).
 
-2. Go to the project root directory "~/pokedex" and run: `yarn install` in order to install all packages needed.
+2. Go to the project root directory "~/pokedex" and run: `yarn add` in order to install all packages needed.
 
 3. Wait for the installation to finish.
 
