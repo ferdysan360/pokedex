@@ -1,15 +1,18 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { useEffect, useState } from 'react';
+import loadable from '@loadable/component';
 import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
-import PokemonCard from '../Components/PokemonCard';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+
+// Code Splitting with Loadable Component
+const PokemonCard = loadable(() => import('../Components/PokemonCard'));
 
 const MyPokemon = ({ myPokemonCallback }) => {
 

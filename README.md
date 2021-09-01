@@ -1,70 +1,55 @@
-# Getting Started with Create React App
+# Pokédex
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Pokédex is a mobile-first & single page application (SPA) site made with React.
 
-## Available Scripts
+## Preparation
 
-In the project directory, you can run:
+1. Git clone this repository using `git clone git@github.com:ferdysan360/pokedex.git` (SSH).
 
-### `yarn start`
+2. Go to the project root directory "~/pokedex" and run: `yarn install` in order to install all packages needed.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+3. Wait for the installation to finish.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## How to Run the Site
 
-### `yarn test`
+You can go to the [github pages site](https://ferdysan360.github.io/pokedex), or if you want to run it on your localhost follow these steps:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. Go to the project root directory "~/pokedex" and run: `yarn start`.
 
-### `yarn build`
+2. Go to your browser and go to `localhost:3000` in order to open the site.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Additional Packages and Tools Used
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. Emotion (for CSS-in-JS).
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+2. Material UI (only for Dialog, Snackbar, and Button).
 
-### `yarn eject`
+3. Loadable Component (for code-splitting).
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+4. Axios (for making HTTP requests).
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+5. Github-pages (for deploying to Github-Pages).
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+6. Lighthouse (for performance audit).
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Screenshots
 
-## Learn More
+### 1. Pokemon List Page
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+![pokemon-list-mobile-1](src/Assets/pokemon-list-mobile-1.png)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+![pokemon-list-mobile-2](src/Assets/pokemon-list-mobile-2.png)
 
-### Code Splitting
+![pokemon-list-desktop](src/Assets/pokemon-list-desktop.png)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### 2. Pokemon Details Page
 
-### Analyzing the Bundle Size
+![pokemon-details-mobile](src/Assets/pokemon-details-mobile.png)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+![pokemon-details-desktop](src/Assets/pokemon-details-desktop.png)
 
-### Making a Progressive Web App
+### 3. My Pokemon Page
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+![my-pokemon-mobile](src/Assets/my-pokemon-mobile.png)
 
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+![my-pokemon-desktop](src/Assets/my-pokemon-desktop.png)

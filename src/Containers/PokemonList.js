@@ -2,9 +2,12 @@
 import { css } from '@emotion/react'
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import loadable from '@loadable/component';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import PokemonCard from '../Components/PokemonCard';
+
+// Code Splitting with Loadable Component
+const PokemonCard = loadable(() => import('../Components/PokemonCard'));
 
 const PokemonList = ({pokemonListCallback}) => {
 

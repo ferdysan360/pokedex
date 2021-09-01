@@ -4,10 +4,13 @@ import { css } from '@emotion/react'
 import { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import PokemonList from './Containers/PokemonList';
-import PokemonDetails from './Containers/PokemonDetails';
+import loadable from '@loadable/component';
 import PokedexLogo from './Assets/pokedex_logo.png';
-import MyPokemon from './Containers/MyPokemon';
+
+// Code Splitting with Loadable Component
+const PokemonList = loadable(() => import('./Containers/PokemonList'));
+const PokemonDetails = loadable(() => import('./Containers/PokemonDetails'));
+const MyPokemon = loadable(() => import('./Containers/MyPokemon'));
 
 function App() {
 
@@ -28,7 +31,8 @@ function App() {
   `
 
   const pokedexLogoStyle = css`
-    max-height: 50px;
+    width: 138.2px;
+    height: 50px;
   `
 
   const callback = (page, pokemonName) => {
