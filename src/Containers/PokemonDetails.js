@@ -2,8 +2,15 @@
 import { css } from '@emotion/react'
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 const PokemonDetails = ({ pokemonName }) => {
 
@@ -12,6 +19,10 @@ const PokemonDetails = ({ pokemonName }) => {
     const [openCaptured, setOpenCaptured] = useState(false);
     const [capturedMessage, setCapturedMessage] = useState(null);
     const [severity, setSeverity] = useState(null);
+    const [openDialog, setOpenDialog] = useState(false);
+    const [nickname, setNickname] = useState(pokemonName);
+    const [isError, setIsError] = useState(false);
+    const [helperText, setHelperText] = useState(null)
 
     useEffect(() => {
         axios.get(url)
@@ -66,6 +77,19 @@ const PokemonDetails = ({ pokemonName }) => {
         return <MuiAlert elevation={6} variant="filled" {...props} />;
     }
 
+    const validateInput = (nickname) => {
+        setNickname(nickname);
+        if (nickname === null || nickname === "") {
+            setIsError(true);
+            setHelperText("Nickname cannot be empty.");
+        }
+        else {
+            setIsError(false);
+            setHelperText("");
+        }
+
+    }
+
     const findNickname = (nickname, initialValue) => {
         var isFound = false;
 
@@ -82,36 +106,36 @@ const PokemonDetails = ({ pokemonName }) => {
         return isFound;
     }
 
-    const catchPokemon = (nickname, pokemon) => {
+    const catchPokemon = (pokemon) => {
         var initialValue = JSON.parse(window.localStorage.getItem("my_pokemon"));
-        
+
         if (!initialValue) {
             initialValue = [];
         }
 
-        while(findNickname(nickname, initialValue)) {
-            nickname = prompt("Nickname already exist. please choose a different nickname:", nickname);
-            if (nickname === null || nickname === "") {
-                setOpenCaptured(false);
-                setCapturedMessage("Pokemon slipped away... Try Again!");
-                setSeverity("error");
-                setOpenCaptured(true);
-                return;
-            }
+        if (findNickname(nickname, initialValue)) {
+            setIsError(true);
+            setHelperText("Nickname already exist. please choose a different nickname.");
+        }
+        else {
+            setIsError(false);
+            setHelperText("");
+            setOpenDialog(false);
+            
+            var newPokemon = {
+                nickname: nickname,
+                name: pokemon?.name
+            };
+    
+            initialValue.push(newPokemon);
+    
+            window.localStorage.setItem("my_pokemon", JSON.stringify(initialValue));
+    
+            setCapturedMessage("Pokemon successfully saved!");
+            setSeverity("success");
+            setOpenCaptured(true);
         }
 
-        var newPokemon = {
-            nickname: nickname,
-            name: pokemon?.name
-        };
-
-        initialValue.push(newPokemon);
-
-        window.localStorage.setItem("my_pokemon", JSON.stringify(initialValue));
-
-        setCapturedMessage("Pokemon successfully saved!");
-        setSeverity("success");
-        setOpenCaptured(true);
     }
 
     const CatchButton = ({ pokemon }) => (
@@ -119,16 +143,8 @@ const PokemonDetails = ({ pokemonName }) => {
             css={catchButtonStyle}
             onClick={() => {
                 if (Math.round(Math.random()) === 1) {
-                    let nickname = prompt("Pokemon Caught! Please enter your pokemon's nickname:", pokemon?.name);
-                    if (nickname === null || nickname === "") {
-                        setOpenCaptured(false);
-                        setCapturedMessage("Pokemon slipped away... Try Again!");
-                        setSeverity("error");
-                        setOpenCaptured(true);
-                    }
-                    else {
-                        catchPokemon(nickname, pokemon);
-                    }
+                    setNickname(pokemonName);
+                    setOpenDialog(true);
                 }
                 else {
                     setOpenCaptured(false);
@@ -141,8 +157,6 @@ const PokemonDetails = ({ pokemonName }) => {
             Catch!
         </button>
     )
-
-    
 
     return (
         <div>
@@ -174,6 +188,35 @@ const PokemonDetails = ({ pokemonName }) => {
                     {capturedMessage}
                 </Alert>
             </Snackbar>
+            <Dialog open={openDialog} onClose={() => { setOpenDialog(false) }} aria-labelledby="form-dialog-title">
+                <form onSubmit={(e) => { e.preventDefault(); catchPokemon(pokemonInfo)}}>
+                    <DialogTitle id="form-dialog-title">Pokemon Caught!</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            Please enter your pokemon's nickname.
+                        </DialogContentText>
+                        <TextField
+                            error={isError}
+                            autoFocus
+                            margin="dense"
+                            id="nickname"
+                            label="Pokemon Nickname"
+                            fullWidth
+                            value={nickname}
+                            helperText={helperText}
+                            onChange={(e) => {validateInput(e.target.value)}}
+                        />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button type="submit" color="primary" disabled={isError}>
+                            Ok
+                        </Button>
+                        <Button onClick={() => { setNickname(pokemonName); setOpenDialog(false); }} color="primary">
+                            Cancel
+                        </Button>
+                    </DialogActions>
+                </form>
+            </Dialog>
         </div>
 
     );
