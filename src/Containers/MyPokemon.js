@@ -1,9 +1,15 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { useEffect, useState } from 'react';
+import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import PokemonCard from '../Components/PokemonCard';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 const MyPokemon = ({ myPokemonCallback }) => {
 
@@ -11,6 +17,8 @@ const MyPokemon = ({ myPokemonCallback }) => {
     const [openReleased, setOpenReleased] = useState(false);
     const [releasedMessage, setReleasedMessage] = useState(null);
     const [severity, setSeverity] = useState(null);
+    const [openDialog, setOpenDialog] = useState(false);
+    const [pokemonIndex, setPokemonIndex] = useState(-1);
 
     useEffect(() => {
         setPokemonList(JSON.parse(window.localStorage.getItem("my_pokemon")));
@@ -37,18 +45,22 @@ const MyPokemon = ({ myPokemonCallback }) => {
         callback(pokemonName);
     }
 
+    const confirmRelease = () => {
+        var newPokemonList = pokemonList.slice();
+        newPokemonList.splice(pokemonIndex, 1);
+
+        window.localStorage.setItem("my_pokemon", JSON.stringify(newPokemonList));
+        setPokemonList(newPokemonList);
+
+        setOpenDialog(false);
+        setReleasedMessage("Pokemon successfully released!");
+        setSeverity("success");
+        setOpenReleased(true);
+    }
+
     const releasePokemon = ( pokemon, index ) => {
-        if (window.confirm("Are you sure you want to release this pokemon?")) {
-            var newPokemonList = pokemonList.slice();
-            newPokemonList.splice(index, 1);
-
-            window.localStorage.setItem("my_pokemon", JSON.stringify(newPokemonList));
-            setPokemonList(newPokemonList);
-
-            setReleasedMessage("Pokemon successfully released!");
-            setSeverity("success");
-            setOpenReleased(true);
-        }
+        setPokemonIndex(index);
+        setOpenDialog(true);
     }
 
     return (
@@ -73,6 +85,22 @@ const MyPokemon = ({ myPokemonCallback }) => {
                     {releasedMessage}
                 </Alert>
             </Snackbar>
+            <Dialog open={openDialog} onClose={() => { setOpenDialog(false) }} aria-labelledby="form-dialog-title">
+                <DialogTitle id="form-dialog-title">Release Pokemon</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Are you sure you want to release this pokemon?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => { confirmRelease(); }} color="secondary">
+                        Yes
+                    </Button>
+                    <Button onClick={() => { setPokemonIndex(-1); setOpenDialog(false); }} color="primary">
+                        Cancel
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </div>
     );
 }
